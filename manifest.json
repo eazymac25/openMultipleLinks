@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "BulkOpen",
+  "version": "1.0.0",
+  "description": "Open Multiple Links at once a with shift+click+drag",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "selectionScript.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "http://*/*",
+    "https://*/*"
+  ]
+}
