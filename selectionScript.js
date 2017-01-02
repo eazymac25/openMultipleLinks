@@ -112,10 +112,18 @@ function mouseUp(e){
 			allLinks[i].style.cssText = allStyles[i];
 		}
 	}
-	if (linksToOpen.length > 0){
-		chrome.extension.sendMessage({
+	console.log('hello');
+	if (linksToOpen.length >0 || true){
+		console.log('messageSend');
+		for (var i=0; i<linksToOpen.length; i++){
+			console.log(linksToOpen[i]);
+		}
+		
+		chrome.runtime.sendMessage({
 			message: 'openUrls',
 			urls: linksToOpen
+		}, function(response){
+			//console.log(response);
 		});
 	}
 
@@ -154,7 +162,8 @@ function overlap(allLinks,minCoor,maxCoor){
 
 		if (xBool && yBool){
 			allLinks[i].style.cssText += "border: thin solid red;";
-			getLinks.push(allLinks[i].href);
+			getLinks.push({url:allLinks[i].href,title:allLinks[i].innerHTML});
+			// getLinks.push(allLinks[i].href)
 			allLinks[i].isHighlighted = true;
 		} else {
 			allLinks[i].style.cssText = allStyles[i]

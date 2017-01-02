@@ -1,15 +1,20 @@
 
 
 
-chrome.extension.onMessage.addListener(linkRequest)
-
-function linkRequest(request, sender, callback) {
-	if (request.message == "openUrls"){
-		if (request.urls ===0) {
+//chrome.extension.onMessage.addListener(linkRequest)
+console.log('this is background');
+function linkRequest(request, sender, response) {
+	
+	if (request.message === "openUrls"){
+		
+		if (request.urls.length ===0) {
+			//alert(request.message.toString());
+			console.log(request);
 			return;
 		}
+		console.log(request);
 		chrome.tabs.get(sender.tab.id, function(tab) {
-			chrome.window.getCurrent(function(window){
+			chrome.windows.getCurrent(function(window){
 				var tab_index = tab.index + 1;
 
 				var tabObj = {
@@ -20,7 +25,7 @@ function linkRequest(request, sender, callback) {
 
 				for (var i = 0; i<request.urls.length; i++){
 
-					tabObj.url = request.urls[i];
+					tabObj.url = request.urls[i].url;
 					chrome.tabs.create(tabObj, function(tab){
 
 					});
@@ -30,3 +35,7 @@ function linkRequest(request, sender, callback) {
 		});
 	}
 }
+
+
+
+chrome.runtime.onMessage.addListener(linkRequest)
