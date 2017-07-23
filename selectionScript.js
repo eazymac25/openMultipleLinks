@@ -68,6 +68,8 @@ function mouseDown(e){
 	selectBox.style.top = selectBox.firstCoord.y + "px";
 	selectBox.style.display = "block";
 
+	clearEventBubble(e);
+
 	document.onmousemove = mouseMove;
 	document.onmouseup = mouseUp;
 	//var selectBox = document.createElement("DIV");
@@ -93,6 +95,8 @@ function mouseMove(e) {
 	var maxCoor = new coord(Math.max(movedCoord.x,box.firstCoord.x),Math.max(movedCoord.y,box.firstCoord.y));
 
 	linksToOpen = overlap(allLinks,minCoor,maxCoor);
+
+	clearEventBubble(e);
 
 }
 
@@ -140,6 +144,9 @@ function overlap(allLinks,minCoor,maxCoor){
 		//allLinks[i].style.border = "thin solid red";
 		var bb = allLinks[i].getBoundingClientRect();
 		// check if x overlaps
+		bb.top = bb.top + pageYOffset;
+		bb.left = bb.left + pageXOffset;
+
 		var topLeft = new coord(bb.left, bb.top);
 		var botRight = new coord(bb.right,bb.bottom);
 
@@ -196,6 +203,18 @@ function coord(x,y){
 		return "x:" + parseInt(this.x) + " , y:" + parseInt(this.y);
 	}
 }
+
+
+function clearEventBubble(evt) {  
+    if (evt.stopPropagation)  
+        evt.stopPropagation();  
+    else  
+        evt.cancelBubble = true;  
+    if (evt.preventDefault)  
+        evt.preventDefault();  
+    else  
+        evt.returnValue = false;  
+}  
 
 function pauseEvent(e){
     if(e.stopPropagation) e.stopPropagation();
